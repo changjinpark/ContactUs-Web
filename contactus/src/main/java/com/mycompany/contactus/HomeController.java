@@ -2,6 +2,8 @@ package com.mycompany.contactus;
 
 import java.util.Locale;
 
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mycompany.contactus.service.ContactService;
 /**
  * Handles requests for the application home page.
  */
@@ -17,9 +20,9 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	@Inject
+	ContactService service;
+	
 	@RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
 	public String home(Locale locale, Model model, String fullName, 
 			String Email, String Phone, String Subject, String Message) {
@@ -29,7 +32,8 @@ public class HomeController {
 		logger.info("Phone {}.", Phone);
 		logger.info("Subject {}.", Subject);
 		logger.info("Message {}.", Message);
-
+	
+		service.putcontactus(fullName, Email, Phone, Subject, Message);
 		
 		return "home";
 	}	
